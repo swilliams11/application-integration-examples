@@ -1,0 +1,8 @@
+{
+    "alias": "sfdx_int",
+    "username": "USERNAME+ORGID_integration_user@example.com",
+    "email": "USERNAME+ORGID_integration_user@example.com",
+    "lastname": "User",
+    "firstname": "Integration",
+    "title": "Integration User"
+  }

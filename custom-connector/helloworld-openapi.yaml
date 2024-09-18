@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+   test
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://DOMAIN.cloudfunctions.net
+tags:
+  - name: pet
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: store
+    description: Access to Petstore orders
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: user
+    description: Operations about user
+paths:
+  /helloworld:
+    get:
+      tags:
+        - hello
+      summary: say hello
+      description: say hello
+      operationId: sayHello
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Hello'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Not Found
+        '422':
+          description: Validation exception
+      security:
+        - bearerHttpAuthentication: []
+       
+components:
+  schemas:
+    Hello:
+      type: object
+      example: |
+          Hello, world!
+       
+  securitySchemes:
+    bearerHttpAuthentication:
+      description: Bearer token using a JWT
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

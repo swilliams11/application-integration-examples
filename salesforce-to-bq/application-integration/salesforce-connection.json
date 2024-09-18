@@ -1,0 +1,57 @@
+{
+    "description": "my personal salesforce developer org",
+    "connectorDetails": {
+            "name": "salesforce",
+            "provider": "salesforce",
+            "version": 1
+    },
+    "configVariables": [
+            {
+                    "key": "verbosity",
+                    "stringValue": "5"
+            },
+            {
+                    "key": "proxy_enabled"
+            }
+    ],
+    "authConfig": {
+            "authType": "USER_PASSWORD",
+            "userPassword": {
+                    "username": "REPLACE_SALESFORCE_USERNAME",
+                    "passwordDetails": {
+                            "secretName": "salesforce-app-inte-user-password"
+                    }
+            },
+            "additionalVariables": [
+                    {
+                            "key": "security_token",
+                            "secretValue": {
+                                    "secretVersion": "projects/REPLACE_PROJECT_ID/secrets/salesforce-app-int-user-security-token/versions/1"
+                            }
+                    }
+            ]
+    },
+    "nodeConfig": {
+            "minNodeCount": 1,
+            "maxNodeCount": 1
+    },
+    "destinationConfigs": [
+            {
+                    "key": "login_url",
+                    "destinations": [
+                            {
+                                    "host": "https://REPLACE_SALESFORCE_DOMAIN.develop.my.salesforce.com"
+                            }
+                    ]
+            }
+    ],
+    "logConfig": {
+            "enabled": true
+    },
+    "sslConfig": {
+            "privateServerCertificate": {},
+            "clientCertificate": {},
+            "clientPrivateKey": {},
+            "clientPrivateKeyPass": {}
+    }
+}

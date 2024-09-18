@@ -1,0 +1,16 @@
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>My_Permission_Set</label>   
+
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Account</object>   
+
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>   
+
+</PermissionSet>
