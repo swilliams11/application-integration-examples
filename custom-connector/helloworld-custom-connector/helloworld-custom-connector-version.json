@@ -1,0 +1,5 @@
+{
+	"name": "projects/REPLACE_PROJECT/locations/global/customConnectors/REPLACE_CONNECTOR_NAME/customConnectorVersions/1",
+	"specLocation": "REPLACE_OPENAPI_URL",
+	"serviceAccount": "REPLACE_SERVICE_ACCOUNT"
+}

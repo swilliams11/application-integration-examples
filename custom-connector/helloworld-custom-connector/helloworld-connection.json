@@ -1,0 +1,40 @@
+{
+    "connectorDetails": {
+            "name": "helloworld-cf-connector",
+            "provider": "customconnector",
+            "versionId": "1"
+    },
+    "authConfig": {
+            "additionalVariables": [
+                    {
+                            "key": "scopes"
+                    }
+            ]
+    },
+    "nodeConfig": {
+            "minNodeCount": 1,
+            "maxNodeCount": 1
+    },
+    "destinationConfigs": [
+            {
+                    "key": "base_url",
+                    "destinations": [
+                            {
+                                    "host": "https://REPLACE_YOUR_DOMAIN.cloudfunctions.net"
+                            }
+                    ]
+            },
+            {
+                    "key": "auth_server_address"
+            }
+    ],
+    "logConfig": {
+            "enabled": true
+    },
+    "sslConfig": {
+            "privateServerCertificate": {},
+            "clientCertificate": {},
+            "clientPrivateKey": {},
+            "clientPrivateKeyPass": {}
+    }
+}
