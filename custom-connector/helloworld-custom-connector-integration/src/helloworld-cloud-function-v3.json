@@ -1,0 +1,162 @@
+{
+  "triggerConfigs": [{
+    "label": "API Trigger",
+    "startTasks": [{
+      "taskId": "3"
+    }],
+    "properties": {
+      "Trigger name": "helloworld-cloud-function_API_1"
+    },
+    "triggerType": "API",
+    "triggerNumber": "1",
+    "triggerId": "api_trigger/helloworld-cloud-function_API_1",
+    "position": {
+      "x": -352,
+      "y": -848
+    }
+  }],
+  "taskConfigs": [{
+    "task": "GenericConnectorTask",
+    "taskId": "1",
+    "parameters": {
+      "connectorInputPayload": {
+        "key": "connectorInputPayload",
+        "value": {
+          "stringValue": "$`Task_1_connectorInputPayload`$"
+        }
+      },
+      "connectionName": {
+        "key": "connectionName",
+        "value": {
+          "stringValue": "projects/__PROJECT__/locations/__REGION__/connections/__CONNECTION_NAME__"
+        }
+      },
+      "connectorOutputPayload": {
+        "key": "connectorOutputPayload",
+        "value": {
+          "stringValue": "$`Task_1_connectorOutputPayload`$"
+        }
+      },
+      "operation": {
+        "key": "operation",
+        "value": {
+          "stringValue": "EXECUTE_ACTION"
+        }
+      },
+      "connectionVersion": {
+        "key": "connectionVersion",
+        "value": {
+          "stringValue": "projects/__PROJECT__/locations/global/customConnectors/__CONNECTOR_NAME__/customConnectorVersions/1"
+        }
+      },
+      "actionName": {
+        "key": "actionName",
+        "value": {
+          "stringValue": "GET_/helloworld"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "2"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "helloworld cloud function",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -320,
+      "y": -496
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "2",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"JSON_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$`Task_1_connectorOutputPayload`$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$myvalue$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Data Mapping",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -320,
+      "y": -384
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "3",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"JSON_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$testinput$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$`Task_1_connectorInputPayload`$\",\n      \"fieldType\": \"JSON_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "1"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Data Mapping 1",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -352,
+      "y": -688
+    }
+  }],
+  "integrationParameters": [{
+    "key": "`Task_1_connectorInputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_1_connectorInputPayload`",
+    "producer": "1_1",
+    "jsonSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"ResponseHasBytes\": {\n      \"type\": \"boolean\",\n      \"description\": \"Indicates if response has bytes\"\n    }\n  }\n}"
+  }, {
+    "key": "`Task_1_connectorOutputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_1_connectorOutputPayload`",
+    "isTransient": true,
+    "producer": "1_1",
+    "jsonSchema": "{\n  \"type\": \"array\",\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"StatusCode\": {\n        \"type\": \"integer\",\n        \"description\": \"Successful operation\"\n      },\n      \"ResponseBody\": {\n        \"type\": \"string\"\n      },\n      \"ResponseHeaders\": {\n        \"type\": \"object\"\n      }\n    },\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n  }\n}"
+  }, {
+    "key": "myvalue",
+    "dataType": "STRING_VALUE",
+    "displayName": "myvalue",
+    "inputOutputType": "OUT"
+  }, {
+    "key": "testinput",
+    "dataType": "JSON_VALUE",
+    "defaultValue": {
+      "jsonValue": "{\n  \"test\": \"test\"\n}"
+    },
+    "displayName": "testinput",
+    "inputOutputType": "IN"
+  },{
+    "parameter": {
+      "key": "`CONFIG_CONN_NAME`",
+      "dataType": "STRING_VALUE",
+      "defaultValue": {
+        "stringValue": "projects/__PROJECT__/locations/__REGION__/connections/__CONNECTION_NAME__"
+      },
+      "displayName": "`CONFIG_CONN_NAME`"
+    },
+    "value": {
+      "stringValue": "projects/__PROJECT__/locations/__REGION__/connections/__CONNECTION_NAME__"
+    }
+  },
+  {
+    "parameter": {
+      "key": "`CONFIG_CONNECTOR_VERSION`",
+      "dataType": "STRING_VALUE",
+      "defaultValue": {
+        "stringValue": "projects/__PROJECT__/locations/global/customConnectors/__CONNECTOR_NAME__/customConnectorVersions/1"
+      },
+      "displayName": "`CONFIG_CONNECTOR_VERSION`"
+    },
+    "value": {
+      "stringValue": "projects/__PROJECT__/locations/global/customConnectors/__CONNECTOR_NAME__/customConnectorVersions/1"
+    }
+  }
+  ]
+}

@@ -54,7 +54,7 @@ resource "null_resource" "create_custom_connector" {
 
   provisioner "local-exec" {
     when = destroy
-    command = ""
+    command = "integrationcli connectors custom delete -n ${var.custom_connector_name} --default-token"
   }
 }
 
@@ -82,10 +82,11 @@ resource "null_resource" "create_custom_connector_version" {
     command = "integrationcli connectors custom versions create -n ${var.custom_connector_name} -f ../helloworld-custom-connector/helloworld-custom-connector-verson.json --id 1 --default-token"
   }
 
-  provisioner "local-exec" {
-    when = destroy
-    command = ""
-  }
+  # there is no delete command for the custom connector version
+  # provisioner "local-exec" {
+  #   when = destroy
+  #   command = ""
+  # }
 
   depends_on = [
                 null_resource.find_replace_config_custom_connector_version
@@ -115,8 +116,34 @@ resource "google_integration_connectors_connection" "helloworld_custom_connectio
 }
 
 # ***
-# TODO finish updating the code below
+# Deploy the integration
 # ***
+# 1. Find and replace values in config files
+resource "null_resource" "find_replace_values_in_app_integration" {
+
+  # this does not deploy both intergrations; it only deploys one of them.
+  provisioner "local-exec" {
+    when = create
+    interpreter = ["bash", "-c"] 
+    command = "cp ../custom-connector/helloworld-custom-connector-integration/prod/helloworld-custom-connector-version.json ../helloworld-custom-connector/helloworld-custom-connector-version.backup.json  && python3 find_replace.py ${var.custom_connector_json_file} REPLACE_PROJECT:${var.project_id} REPLACE_CONNECTOR_NAME:${var.custom_connector_name} REPLACE_OPENAPI_URL:${var.custom_connector_openapi_url} REPLACE_SERVICE_ACCOUNT:${var.custom_connector_sa_name}"
+  }
+#     provisioner "local-exec" {
+#         when = create
+#         interpreter = ["bash", "-c"]
+#         command = "integrationcli integrations create -f integrations/api_count/src/cl-getApiCount-tf.json -n cl-getApiCount-tf -p ${var.project_id} -r ${var.connector_region} --default-token"
+#   }
+
+  provisioner "local-exec" {
+    when    = destroy
+    interpreter = ["bash", "-c"] 
+    command = "integrationcli integrations delete -n cl-getApiCount-tf --default-token"
+  }
+   depends_on = [
+                ]
+}
+
+
+# 2. Upload integration
 resource "null_resource" "upload_integration" {
 
   # this does not deploy both intergrations; it only deploys one of them.
@@ -136,37 +163,9 @@ resource "null_resource" "upload_integration" {
     interpreter = ["bash", "-c"] 
     command = "integrationcli integrations delete -n cl-getApiCount-tf --default-token"
   }
-}
-
-
-resource "null_resource" "upload_integration_bq" {
-  # Add any dependencies that the script needs here
-  depends_on = [null_resource.find_replace_config,
-                null_resource.find_replace_integration,
-                google_integration_connectors_connection.bq_connection,
-                null_resource.upload_integration
+   depends_on = [null_resource.find_replace_values_in_app_integration
                 ]
-
-  # this does not deploy both intergrations; it only deploys one of them.
-#   provisioner "local-exec" {
-#     when = create
-#     interpreter = ["bash", "-c"] 
-#     command = "integrationcli integrations create -f integrations/api_count/src/cl-getApiCount-to-bq-tf.json -n cl-getApiCount-to-bq-tf -p ${var.project_id} -r ${var.connector_region} --default-token"
-#   }
-provisioner "local-exec" {
-    when = create
-    interpreter = ["bash", "-c"] 
-    command = "integrationcli integrations apply -f integrations/api_count_bq/ -e dev -p ${var.project_id} -r ${var.connector_region} --default-token"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    interpreter = ["bash", "-c"] 
-    command = "integrationcli integrations delete -n cl-getApiCount-to-bq-tf --default-token"
-  }
 }
-
-
 
 
 

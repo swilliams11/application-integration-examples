@@ -1,0 +1,4 @@
+{
+    "`CONFIG_CONN_NAME`": "projects/__PROJECT__/locations/__REGION__/connections/__CONNECTION_NAME__",
+    "`CONFIG_CONNECTOR_VERSION`": "projects/__PROJECT__/locations/global/customConnectors/__CONNECTOR_NAME__/customConnectorVersions/1"
+}
